@@ -56,6 +56,9 @@ const AuthPage = () => {
 
   return (
     <div className="auth-page">
+
+
+      <h2 className="reg_title"> Welcome to Ansor CRM</h2>
       <Particles
         id="particles-here"
         init={particlesInit}
