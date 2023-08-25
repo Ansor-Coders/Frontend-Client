@@ -1,7 +1,6 @@
 @import '../../base.scss';
 
 
-// Sidebar.scss
 .sidebar {
   width: 250px;
   height: 100vh;
@@ -12,11 +11,11 @@
   border-bottom-right-radius: 20px;
   position: fixed;
   top: 0;
-  left: -250px; /* Default hidden position */
+  left: -250px; 
   transition: left 0.3s ease;
 
   &.open {
-    left: 0; /* Move in from the left when open */
+    left: 0; 
   }
 
 
@@ -35,8 +34,8 @@
       cursor: pointer;
 
       &:hover {
-        background-color: #fff;
-        border-radius: 20px;
+        background-color: #edecfd;
+        border-radius: 10px;
       }
     }
   }
