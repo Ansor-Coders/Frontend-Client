@@ -1,3 +1,4 @@
+// Header.scss
 .header {
   display: flex;
   justify-content: space-between;
@@ -6,8 +7,9 @@
   color: white;
   padding: 20px 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border: 1px solid #eee;
   margin-bottom: 0.2rem;
+  transition: margin-left 0.3s ease; /* Add transition for smooth animation */
+
 
   h1 {
     margin: 0;
@@ -24,9 +26,19 @@
     }
   }
 
-  .hamburger{
+  .hamburger {
     font-size: 30px;
     color: #000;
     cursor: pointer;
+    margin-right: 20px; /* Move the hamburger button right */
   }
+
+
+
+
+}
+
+
+.app-container.sidebar-open .header {
+  margin-left: 250px; /* Adjust margin to make space for the open sidebar */
 }
