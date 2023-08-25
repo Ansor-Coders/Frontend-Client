@@ -1,20 +1,18 @@
+// Root.js
 import React from "react";
 import Sidebar from "../sidebar/Sidebar";
 import Header from "../Header/Header";
+import { useSelector } from "react-redux";
 
 const Root = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
 
   return (
-    <>
-      <Header title="Your App Title" toggleSidebar={toggleSidebar} />
-      <Sidebar isTeacher={true} isSidebarOpen={isSidebarOpen} />{" "}
-      {/* Pass isSidebarOpen here */}
-    </>
+    <div className={`app-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
+      <Header title="Your App Title" />
+      <Sidebar />
+      <div className="content">{/* Your main content goes here */}</div>
+    </div>
   );
 };
 

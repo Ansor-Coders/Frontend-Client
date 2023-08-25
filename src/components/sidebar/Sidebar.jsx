@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+// Sidebar.js
+import React from "react";
 import "./Sidebar.scss";
+import { useSelector } from "react-redux";
 
-const Sidebar = ({ isSidebarOpen }) => {
-  const [isTeacher, setIsTeacher] = useState(true);
+const Sidebar = () => {
+  const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
 
-  const teacherSidebarItems = [
+  const sidebarItems = [
     "Bosh sahifa",
     "O'qituvchilar",
     "O'quvchilar",
@@ -13,19 +15,8 @@ const Sidebar = ({ isSidebarOpen }) => {
     "Sozlamalar",
   ];
 
-  const studentSidebarItems = [
-    "Bosh sahifa",
-    "Bugun",
-    "Darslarim",
-    "Guruhlarim",
-    "O'quvchilarim",
-    "Sozlamalar",
-  ];
-
-  const sidebarItems = isTeacher ? teacherSidebarItems : studentSidebarItems;
-
- return (
-    <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}> {/* Use isSidebarOpen here */}
+  return (
+    <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
       <ul>
         {sidebarItems.map((item, index) => (
           <li key={index}>{item}</li>
