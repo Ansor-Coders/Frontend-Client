@@ -1,17 +1,17 @@
 // Root.js
 import React from "react";
-import Sidebar from "../sidebar/Sidebar";
-import Header from "../Header/Header";
-import { useSelector } from "react-redux";
+
+import Register from "../../Pages/Register/register";
+import { Routes, Route } from "react-router-dom";
+import Home from "../../Pages/Main/Home";
 
 const Root = () => {
-  const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
-
   return (
-    <div className={`app-container ${isSidebarOpen ? "sidebar-open" : ""}`}>
-      <Header title="Your App Title" />
-      <Sidebar />
-      <div className="content">{/* Your main content goes here */}</div>
+    <div>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
     </div>
   );
 };
