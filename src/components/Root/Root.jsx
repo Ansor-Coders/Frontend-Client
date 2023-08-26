@@ -1,20 +1,17 @@
 import React from "react";
-import Sidebar from "../sidebar/Sidebar";
-import Header from "../Header/Header";
+
+import Register from "../../Pages/Register/register";
+import { Routes, Route } from "react-router-dom";
+import Home from "../../Pages/Main/Home";
 
 const Root = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <>
-      <Header title="Your App Title" toggleSidebar={toggleSidebar} />
-      <Sidebar isTeacher={true} isSidebarOpen={isSidebarOpen} />{" "}
-      {/* Pass isSidebarOpen here */}
-    </>
+    <div>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<Home />} />
+      </Routes>
+    </div>
   );
 };
 
