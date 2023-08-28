@@ -4,9 +4,10 @@ import "./Sidebar.scss";
 import { useSelector } from "react-redux";
 
 const Sidebar = () => {
+  const isAdmin = useSelector((state) => state.auth.isAdmin);
   const isSidebarOpen = useSelector((state) => state.sidebar.isSidebarOpen);
 
-  const sidebarItems = [
+  const adminSidebarItems = [
     "Bosh sahifa",
     "O'qituvchilar",
     "O'quvchilar",
@@ -14,6 +15,15 @@ const Sidebar = () => {
     "Sinovdagilar",
     "Sozlamalar",
   ];
+
+  const teacherSidebarItems = [
+    "Bugun",
+    "Darslarim",
+    "Guruhlarim",
+    "O'quvchilarim",
+  ];
+
+  const sidebarItems = isAdmin ? adminSidebarItems : teacherSidebarItems;
 
   return (
     <div className={`sidebar ${isSidebarOpen ? "open" : ""}`}>

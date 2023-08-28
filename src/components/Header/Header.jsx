@@ -5,7 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../../redux/actions/actions";
 
-const Header = ({ title }) => {
+const Header = () => {
   const dispatch = useDispatch();
 
   return (

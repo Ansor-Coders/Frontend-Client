@@ -1,63 +1,62 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Particles from "react-tsparticles";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import API from '../../api/api'
 import { loadFull } from "tsparticles";
+import { connect } from "react-redux";
+import { setAdminStatus } from "../../redux/actions/actions";
 import { useNavigate } from "react-router-dom";
 import "./log.scss";
 
-const AuthPage = () => {
-  const [email, setEmail] = useState("");
+const AuthPage = ({ isAdmin, setAdminStatus }) => {
+  const [usernameOrPhone, setUsernameOrPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-
-  const [isRegistering, setIsRegistering] = useState(true);
+  const [loginStatus, setLoginStatus] = useState(null);
   const navigate = useNavigate();
-  const handleToggleMode = () => {
-    setIsRegistering(!isRegistering);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      if (isRegistering) {
-        const response = await axios.post(
-          "https://userservers.onrender.com/api/auth/register",
-          {
-            name,
-            email,
-            password,
-          }
-        );
-        console.log(response.data);
-        toast("Successfully Registered");
+      const payload = {
+        password,
+      };
+
+      if (isAdmin) {
+        payload.username = usernameOrPhone;
       } else {
-        const response = await axios.post(
-          "https://userservers.onrender.com/api/auth/login",
-          {
-            email,
-            password,
-          }
-        );
-        console.log(response.data.token);
-        localStorage.setItem("token", response.data.token);
-        navigate("/usermanagement");
+        payload.phone = usernameOrPhone;
+      }
+
+      const response = await axios.post(
+        isAdmin
+          ? `${API}/admin/signin`
+          : `${API}teacher/signin`,
+        payload
+      );
+      setLoginStatus("success");
+      const token = response.data.token;
+      const userRole = response.data.teacher ? "teacher" : "admin";
+
+      localStorage.setItem("token", token);
+
+      if (userRole === "admin") {
+        navigate("/home");
+      } else if (userRole === "teacher") {
+        navigate("/home");
+      } else {
+        console.error("Unknown role or error occurred.");
       }
     } catch (error) {
-      console.error(error.response.data);
+      setLoginStatus("error");
     }
   };
 
   const particlesInit = async (main) => {
     await loadFull(main);
   };
-
   return (
     <div className="auth-page">
-
-
       <h2 className="reg_title"> Welcome to Ansor CRM</h2>
       <Particles
         id="particles-here"
@@ -173,24 +172,14 @@ const AuthPage = () => {
           retina_detect: true,
         }}
       />
-
       <div className="auth-container">
-        <h2>{isRegistering ? "Register" : "Login"}</h2>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
-          {isRegistering && (
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          )}
           <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder={isAdmin ? "Username" : "Phone Number"}
+            value={usernameOrPhone}
+            onChange={(e) => setUsernameOrPhone(e.target.value)}
             required
           />
           <input
@@ -200,20 +189,38 @@ const AuthPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">{isRegistering ? "Register" : "Login"}</button>
+          <label className="check_label">
+            <input
+              className="check_input"
+              type="checkbox"
+              checked={isAdmin}
+              onChange={() => setAdminStatus(!isAdmin)}
+            />
+            Login as Admin
+          </label>
+          <button type="submit">Login</button>
         </form>
-        <p>
-          {isRegistering
-            ? "Already have an account?"
-            : "Don't have an account?"}
-          <span onClick={handleToggleMode}>
-            {isRegistering ? "Login" : "Register"}
-          </span>
-        </p>
+
+        {loginStatus === "success" && (
+          <p className="success-message">Login successful!</p>
+        )}
+        {loginStatus === "error" && (
+          <p className="error-message">Login failed. Please try again.</p>
+        )}
       </div>
-      <ToastContainer />
     </div>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    isAdmin: state.auth.isAdmin,
+  };
+};
 
-export default AuthPage;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setAdminStatus: (isAdmin) => dispatch(setAdminStatus(isAdmin)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthPage);
