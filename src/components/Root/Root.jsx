@@ -8,7 +8,7 @@ const Root = () => {
   return (
     <div>
       <Routes>
-        <Route path="/register" element={<Register />} />
+        <Route path="/register"  element={<Register />} />
         <Route path="/home" element={<Home />} />
       </Routes>
     </div>
